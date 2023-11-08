@@ -47,6 +47,18 @@ public class Window extends JFrame{
 
     private final double SCREEN_INCREASE_FACTOR_0_99 = 0.99;
 
+//    private JTextField player1AnswerField;
+//
+//    private JTextField player2AnswerField;
+//
+//    public JTextField getPlayer1AnswerField() {
+//        return player1AnswerField;
+//    }
+//
+//    public JTextField getPlayer2AnswerField() {
+//        return player2AnswerField;
+//    }
+
     public Window() {
         super("Darts");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,17 +119,17 @@ public class Window extends JFrame{
                 "Программа, являющаяся частью другой программы и удовлетворяющая требованиям языка программирования к структуре программы",
                 "Искусственный язык, предназначенный для выражения алгоритмов",
                 "Язык программирования, используемый для первичного представления программы",
-                "Язык программирования, предназначенный для представления программ в форме, позволяющей выполнять ее непосредственно техническими средствами обработки информации. Примечание. Для выполнения программы на машинном языке не требуется применение трансляторов, компиляторов и интерпретаторов",
+                "Язык программирования, предназначенный для представления программ в форме, позволяющей выполнять ее непосредственно техническими средствами обработки информации.",
                 "Язык программирования, понятия и структура которого удобны для восприятия человеком",
                 "Язык программирования для выражения определений. Примечание. В качестве такого языка часто выступает язык описания данных",
                 "Язык программирования, в котором действия над данными выражаются в терминах последовательностей команд",
                 "Язык программирования, в котором действия над данными выражаются в виде обращений к функциональным процедурам",
-                "Программа или техническое средство, выполняющие трансляцию программы. Примечание. На транслятор обычно возлагаются функции диагностики ошибок, формирования словарей идентификаторов, выдачи для печати текстов программ и т.д.",
+                "Программа или техническое средство, выполняющие трансляцию программы.",
                 "Программа или техническое средство, выполняющие компиляцию.",
                 "Программа или техническое средство, выполняющие ассемблирование",
-                "Программа или техническое средство, выполняющие интерпретацию. Примечание. Большинство интерпретаторов осуществляют интерпретацию программы путем последовательной интерпретации ее предложений",
-                "Организованная совокупность программ или частей этих программ, а также, возможно, информации, относящейся к их использованию. Примечание.Библиотека программ часто называется в соответствии с природой содержащихся в ней элементов",
-                "Метод построения программ, использующий только иерархически вложенные конструкции каждая из которых имеет единственную точка входа и единственную точку выхода. Примечание. В структурном программировании используются три вида структур, связанных с передачей управления: последовательная, условного перехода и циклическая Метод построения программ как совокупностей объектов и классов объектов, которые могут вызывать друг друга для выбора и выполнения операций.",
+                "Программа или техническое средство, выполняющие интерпретацию.",
+                "Организованная совокупность программ или частей этих программ, а также, возможно, информации, относящейся к их использованию.",
+                "Метод построения программ, использующий только иерархически вложенные конструкции каждая из которых имеет единственную точка входа и единственную точку выхода.",
                 "Парадигма разработки программных систем, в которой приложения состоят из объектов.",
                 "Метод построения программ как совокупности логических правил с предварительно определенными алгоритмами для обработки входных данных программы в соответствии с ее правилами",
                 "Формализованное представление требований, предъявляемых к программе, которые должны быть удовлетворены при ее разработке, а также описание задачи, условия и эффекта действия без указания способа его достижения",
@@ -145,6 +157,28 @@ public class Window extends JFrame{
                 "Спецификация программы",
                 "Компиляция"
         };
+        boolean[] answersMarker = {true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+        };
         JLabel player1QuestionLabel = new JLabel("");
         player1QuestionLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_9), LABEL_WIDTH, LABEL_HEIGHT);
         gamePanel.add(player1QuestionLabel);
@@ -165,30 +199,22 @@ public class Window extends JFrame{
         get1Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
         JButton get2Question = new JButton("Получить вопрос");
         get2Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
-        get1Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question, player1AnswerField, player2AnswerField, answers, player1QuestionLabel, player2QuestionLabel));
-        get2Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question, player1AnswerField, player2AnswerField, answers, player1QuestionLabel, player2QuestionLabel));
+        get1Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question, player1AnswerField, player2AnswerField, answers, player1QuestionLabel, player2QuestionLabel, answersMarker));
+        get2Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question, player1AnswerField, player2AnswerField, answers, player1QuestionLabel, player2QuestionLabel, answersMarker));
         gamePanel.add(get1Question);
         gamePanel.add(get2Question);
+        get2Question.setEnabled(false);
 
-        //добавление кнопок отправки ответа и привязывание слушателя
-        JButton send1Button = new JButton("Отправить");
-        send1Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9 + TEXT_FIELD_WIDTH), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7), SEND_BUTTON_WIDTH, BUTTON_HEIGHT);
-        send1Button.addActionListener(new ActionListenerForSend(player1AnswerField, playerAnswer));
-        gamePanel.add(send1Button);
-        JButton send2Button = new JButton("Отправить");
-        send2Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35 + TEXT_FIELD_WIDTH), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7), SEND_BUTTON_WIDTH, BUTTON_HEIGHT);
-        send2Button.addActionListener(new ActionListenerForSend(player2AnswerField, playerAnswer));
-        gamePanel.add(send2Button);
 
         // Добавляем кнопки броска дротиков для каждого игрока
-        JButton player1Button = new JButton("Player 1 throw");
-        player1Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_2), BUTTON_WIDTH, BUTTON_HEIGHT);
-        JButton player2Button = new JButton("Player 2 throw");
-        player2Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_2), BUTTON_WIDTH, BUTTON_HEIGHT);
-        player1Button.addActionListener(new ActionListenerForThrow(player1Button, player2Button, gamePanel, player1ScoreLabel, player2ScoreLabel));
-        player2Button.addActionListener(new ActionListenerForThrow(player1Button, player2Button, gamePanel, player1ScoreLabel, player2ScoreLabel));
-        gamePanel.add(player1Button);
-        gamePanel.add(player2Button);
-        player2Button.setEnabled(false);
+        JButton send1Button = new JButton("Кинуть дротик");
+        send1Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 + BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
+        JButton send2Button = new JButton("Кинуть дротик");
+        send2Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 + BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
+        send2Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel, questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField));
+        send1Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel, questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField));
+        gamePanel.add(send1Button);
+        gamePanel.add(send2Button);
+        send2Button.setEnabled(false);
     }
 }

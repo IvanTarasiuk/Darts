@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -19,28 +18,33 @@ public class ActionListenerForGetQuestion implements ActionListener {
 
     private final JButton get2Question;
 
-    private final JTextField player1TextField;
+    private final JTextField player1AnswerField;
 
-    private final JTextField player2TextField;
+    private final JTextField player2AnswerField;
+
+    private boolean[] answersMarker;
+
 
     public ActionListenerForGetQuestion(
             String[] questions,
             JButton get1Question,
             JButton get2Question,
-            JTextField player1TextField,
-            JTextField player2TextField,
+            JTextField player1AnswerField,
+            JTextField player2AnswerField,
             String[] answers,
             JLabel player1QuestionLabel,
-            JLabel player2QuestionLabel
+            JLabel player2QuestionLabel,
+            boolean[] answersMarker
     ) {
         this.questions = questions;
         this.get1Question = get1Question;
         this.get2Question = get2Question;
-        this.player1TextField = player1TextField;
-        this.player2TextField = player2TextField;
+        this.player1AnswerField = player1AnswerField;
+        this.player2AnswerField = player2AnswerField;
         this.answers = answers;
         this.player1QuestionLabel = player1QuestionLabel;
         this.player2QuestionLabel = player2QuestionLabel;
+        this.answersMarker = answersMarker;
     }
 
 
@@ -59,27 +63,16 @@ public class ActionListenerForGetQuestion implements ActionListener {
         return randomQuestion;
     }
 
-    public boolean isCorrectAnswer(String answer, int randomQuestion, String[] answers) {
-        if(answer.equals(answers[randomQuestion])) {
-            System.out.println("полученный текст = 1 " + answer);
-            System.out.println("Ответ = " + answers[randomQuestion]);
-            System.out.print("Результат = ");
-            System.out.println(answer.equals(answers[randomQuestion]));
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == get1Question) {
-            int randomQuestion = getRandomQuestion(player1QuestionLabel);
-            String answer = player1TextField.getText();
-            isCorrectAnswer(answer, randomQuestion, answers);
+            getRandomQuestion(player1QuestionLabel);
+            get2Question.setEnabled(true);
+            get1Question.setEnabled(false);
         } else if(e.getSource() == get2Question) {
-            int randomQuestion = getRandomQuestion(player2QuestionLabel);
-            String answer = player2TextField.getText();
-            isCorrectAnswer(answer, randomQuestion, answers);
+            getRandomQuestion(player2QuestionLabel);
+            get1Question.setEnabled(true);
+            get2Question.setEnabled(false);
         }
     }
 }
