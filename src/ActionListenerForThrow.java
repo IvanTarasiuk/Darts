@@ -87,17 +87,17 @@ public class ActionListenerForThrow implements ActionListener {
     }
 
     public boolean isCorrectAnswer(String answer, int randomQuestion, String[] answers) {
-        if(answer.equals(answers[randomQuestion])) {
+        if(answer.equalsIgnoreCase(answers[randomQuestion])) {
             System.out.println("полученный текст = " + answer);
             System.out.println("Ответ = " + answers[randomQuestion]);
             System.out.print("Результат = ");
-            System.out.println(answer.equals(answers[randomQuestion]));
+            System.out.println(answer.equalsIgnoreCase(answers[randomQuestion]));
             return true;
         }
         System.out.println("полученный текст = " + answer);
         System.out.println("Ответ = " + answers[randomQuestion]);
         System.out.print("Результат = ");
-        System.out.println(answer.equals(answers[randomQuestion]));
+        System.out.println(answer.equalsIgnoreCase(answers[randomQuestion]));
         return false;
     }
 
@@ -105,101 +105,67 @@ public class ActionListenerForThrow implements ActionListener {
         return playerAnswerField.getText();
     }
 
+    public void throwDart(boolean correctMarker, JTextField playerAnswerField, JLabel playerScoreLabel, JButton sendButtonFalse, JButton sendButtonTrue, int playerTurn){
+        Graphics2D g2 = (Graphics2D) gamePanel.getGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        int playerScore;
+        String textForLabel = "Score for player ";
+        if(playerTurn == 1){
+            g2.setColor(Color.YELLOW);
+            textForLabel += "1: ";
+            playerScore = player1Score;
+        } else {
+            g2.setColor(Color.BLUE);
+            textForLabel += "2: ";
+            playerScore = player2Score;
+        }
+        String answer = getAnswer(playerAnswerField);
+        for(int i = 0; i < questions.length; i++) {
+            if(questions[i].equals("") && answersMarker[i]) {
+                answersMarker[i] = false;
+                correctMarker = isCorrectAnswer(answer, i, answers);
+                break;
+            }
+        }
+        if (correctMarker) {
+            int randomCoordX = CENTER_X - CORRECT_ANSWER_RADIUS + new Random().nextInt(CORRECT_ANSWER_RADIUS * 2);
+            int randomCoordY = CENTER_Y - CORRECT_ANSWER_RADIUS + new Random().nextInt(CORRECT_ANSWER_RADIUS * 2);
+            double distanceFromCenter = Math.pow(Math.pow((CENTER_X - randomCoordX - DART_RADIUS / 2), 2) + Math.pow((CENTER_Y - randomCoordY - DART_RADIUS / 2), 2), 0.5);
+            playerScore += scoreIncrease(distanceFromCenter);
+            playerScoreLabel.setText(textForLabel + playerScore);
+            g2.fillOval(randomCoordX, randomCoordY, DART_RADIUS, DART_RADIUS);
+        } else {
+            int randomCoordX = CENTER_X - BIGGEST_RADIUS + new Random().nextInt(BIGGEST_RADIUS * 2);
+            int randomCoordY = CENTER_Y - BIGGEST_RADIUS + new Random().nextInt(BIGGEST_RADIUS * 2);
+            double distanceFromCenter = Math.pow(Math.pow((CENTER_X - randomCoordX - DART_RADIUS / 2), 2) + Math.pow((CENTER_Y - randomCoordY - DART_RADIUS / 2), 2), 0.5);
+            playerScore += scoreIncrease(distanceFromCenter);
+            playerScoreLabel.setText(textForLabel + playerScore);
+            g2.fillOval(randomCoordX, randomCoordY, DART_RADIUS, DART_RADIUS);
+        }
+        counterOfThrows++;
+        playerAnswerField.setText("");
+        sendButtonFalse.setEnabled(false);
+        sendButtonTrue.setEnabled(true);
+        if(playerTurn == 1){
+            player1Score = playerScore;
+        } else {
+            player2Score = playerScore;
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Graphics2D g2 = (Graphics2D) gamePanel.getGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         boolean correctMarker = false;
-        boolean correctMarker1 = false;
-        boolean correctMarker2 = false;
         if (e.getSource() == send1Button) {
-            g2.setColor(Color.YELLOW);
-            String answer = getAnswer(player1AnswerField);
-            for(int i = 0; i < questions.length; i++) {
-                if(questions[i].equals("") && answersMarker[i]) {
-                    answersMarker[i] = false;
-                    correctMarker = isCorrectAnswer(answer, i, answers);
-                    break;
-                }
-            }
-            if (correctMarker) {
-                int randomCoordX = CENTER_X - CORRECT_ANSWER_RADIUS + new Random().nextInt(CORRECT_ANSWER_RADIUS * 2);
-                int randomCoordY = CENTER_Y - CORRECT_ANSWER_RADIUS + new Random().nextInt(CORRECT_ANSWER_RADIUS * 2);
-                double distanceFromCenter = Math.pow(Math.pow((CENTER_X - randomCoordX - DART_RADIUS / 2), 2) + Math.pow((CENTER_Y - randomCoordY - DART_RADIUS / 2), 2), 0.5);
-                player1Score += scoreIncrease(distanceFromCenter);
-                player1ScoreLabel.setText("Score for Player 1: " + player1Score);
-                g2.fillOval(randomCoordX, randomCoordY, DART_RADIUS, DART_RADIUS);
-            } else {
-                int randomCoordX = CENTER_X - BIGGEST_RADIUS + new Random().nextInt(BIGGEST_RADIUS * 2);
-                int randomCoordY = CENTER_Y - BIGGEST_RADIUS + new Random().nextInt(BIGGEST_RADIUS * 2);
-                double distanceFromCenter = Math.pow(Math.pow((CENTER_X - randomCoordX - DART_RADIUS / 2), 2) + Math.pow((CENTER_Y - randomCoordY - DART_RADIUS / 2), 2), 0.5);
-                player1Score += scoreIncrease(distanceFromCenter);
-                player1ScoreLabel.setText("Score for Player 1: " + player1Score);
-                g2.fillOval(randomCoordX, randomCoordY, DART_RADIUS, DART_RADIUS);
-            }
-            counterOfThrows++;
-            player1AnswerField.setText("");
-            send1Button.setEnabled(false);
-            send2Button.setEnabled(true);
+            throwDart(correctMarker, player1AnswerField, player1ScoreLabel, send1Button, send2Button, 1);
         } else if (e.getSource() == send2Button) {
-            g2.setColor(Color.BLUE);
-            String answer = getAnswer(player2AnswerField);
-            for(int i = 0; i < questions.length; i++) {
-                if(questions[i].equalsIgnoreCase("") && answersMarker[i]) {
-                    answersMarker[i] = false;
-                    correctMarker1 = isCorrectAnswer(answer, i, answers);
-                    break;
-                }
-            }
-            if (correctMarker1) {
-                int randomCoordX = CENTER_X - CORRECT_ANSWER_RADIUS + new Random().nextInt(CORRECT_ANSWER_RADIUS * 2);
-                int randomCoordY = CENTER_Y - CORRECT_ANSWER_RADIUS + new Random().nextInt(CORRECT_ANSWER_RADIUS * 2);
-                double distanceFromCenter = Math.pow(Math.pow((CENTER_X - randomCoordX - DART_RADIUS / 2), 2) + Math.pow((CENTER_Y - randomCoordY - DART_RADIUS / 2), 2), 0.5);
-                player2Score += scoreIncrease(distanceFromCenter);
-                player2ScoreLabel.setText("Score for Player 2: " + player2Score);
-                g2.fillOval(randomCoordX, randomCoordY, DART_RADIUS, DART_RADIUS);
-            } else {
-                int randomCoordX = CENTER_X - BIGGEST_RADIUS + new Random().nextInt(BIGGEST_RADIUS * 2);
-                int randomCoordY = CENTER_Y - BIGGEST_RADIUS + new Random().nextInt(BIGGEST_RADIUS * 2);
-                double distanceFromCenter = Math.pow(Math.pow((CENTER_X - randomCoordX - DART_RADIUS / 2), 2) + Math.pow((CENTER_Y - randomCoordY - DART_RADIUS / 2), 2), 0.5);
-                player2Score += scoreIncrease(distanceFromCenter);
-                player2ScoreLabel.setText("Score for Player 2: " + player2Score);
-                g2.fillOval(randomCoordX, randomCoordY, DART_RADIUS, DART_RADIUS);
-            }
-            counterOfThrows++;
-            player2AnswerField.setText("");
-            send2Button.setEnabled(false);
-            send1Button.setEnabled(true);
+            throwDart(correctMarker, player2AnswerField, player2ScoreLabel, send2Button, send1Button, 2);
         }
         if (counterOfThrows >= MAX_THROWS + 1 && e.getSource() == send2Button) {
-            g2.setColor(Color.BLUE);
-            String answer = getAnswer(player2AnswerField);
-            for(int i = 0; i < questions.length; i++) {
-                if(questions[i].equals("") && answersMarker[i]) {
-                    answersMarker[i] = false;
-                    correctMarker2 = isCorrectAnswer(answer, i, answers);
-                    break;
-                }
-            }
-            if (correctMarker2) {
-                int randomCoordX = CENTER_X - CORRECT_ANSWER_RADIUS + new Random().nextInt(CORRECT_ANSWER_RADIUS * 2);
-                int randomCoordY = CENTER_Y - CORRECT_ANSWER_RADIUS + new Random().nextInt(CORRECT_ANSWER_RADIUS * 2);
-                double distanceFromCenter = Math.pow(Math.pow((CENTER_X - randomCoordX - DART_RADIUS / 2), 2) + Math.pow((CENTER_Y - randomCoordY - DART_RADIUS / 2), 2), 0.5);
-                player2Score += scoreIncrease(distanceFromCenter);
-                player2ScoreLabel.setText("Score for Player 2: " + player2Score);
-                g2.fillOval(randomCoordX, randomCoordY, DART_RADIUS, DART_RADIUS);
-            } else {
-                int randomCoordX = CENTER_X - BIGGEST_RADIUS + new Random().nextInt(BIGGEST_RADIUS * 2);
-                int randomCoordY = CENTER_Y - BIGGEST_RADIUS + new Random().nextInt(BIGGEST_RADIUS * 2);
-                double distanceFromCenter = Math.pow(Math.pow((CENTER_X - randomCoordX - DART_RADIUS / 2), 2) + Math.pow((CENTER_Y - randomCoordY - DART_RADIUS / 2), 2), 0.5);
-                player2Score += scoreIncrease(distanceFromCenter);
-                player2ScoreLabel.setText("Score for Player 2: " + player2Score);
-                g2.fillOval(randomCoordX, randomCoordY, DART_RADIUS, DART_RADIUS);
-            }
-            g2.setColor(Color.BLUE);
-            player2AnswerField.setText("");
-            send2Button.setEnabled(false);
-            send1Button.setEnabled(false);
+            throwDart(correctMarker, player2AnswerField, player2ScoreLabel, send2Button, send1Button, 2);
+
         }
     }
 }

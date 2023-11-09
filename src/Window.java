@@ -19,11 +19,7 @@ public class Window extends JFrame{
 
     private final int SCREEN_HEIGHT = SCREEN_SIZE.height;
 
-    private final String playerAnswer = "";
-
     private final int BUTTON_WIDTH = 150;
-
-    private final int SEND_BUTTON_WIDTH = 80;
 
     private final int TEXT_FIELD_WIDTH = 200;
 
@@ -33,8 +29,6 @@ public class Window extends JFrame{
 
     private final int LABEL_HEIGHT = 150;
 
-    private final double SCREEN_INCREASE_FACTOR_0_2 = 0.2;
-
     private final double SCREEN_INCREASE_FACTOR_0_35 = 0.35;
 
     private final double SCREEN_INCREASE_FACTOR_0_5 = 0.5;
@@ -43,21 +37,20 @@ public class Window extends JFrame{
 
     private final double SCREEN_INCREASE_FACTOR_0_7 = 0.7;
 
+    private final double SCREEN_INCREASE_FACTOR_0_8 = 0.8;
+
     private final double SCREEN_INCREASE_FACTOR_0_9 = 0.9;
 
     private final double SCREEN_INCREASE_FACTOR_0_99 = 0.99;
 
-//    private JTextField player1AnswerField;
+    private JLabel timerLabelForPlayer1;
+
+    private JLabel timerLabelForPlayer2;
+
+//    private Timer timerForPlayer1;
 //
-//    private JTextField player2AnswerField;
-//
-//    public JTextField getPlayer1AnswerField() {
-//        return player1AnswerField;
-//    }
-//
-//    public JTextField getPlayer2AnswerField() {
-//        return player2AnswerField;
-//    }
+//    private Timer timerForPlayer2;
+
 
     public Window() {
         super("Darts");
@@ -130,7 +123,7 @@ public class Window extends JFrame{
                 "Программа или техническое средство, выполняющие интерпретацию.",
                 "Организованная совокупность программ или частей этих программ, а также, возможно, информации, относящейся к их использованию.",
                 "Метод построения программ, использующий только иерархически вложенные конструкции каждая из которых имеет единственную точка входа и единственную точку выхода.",
-                "Парадигма разработки программных систем, в которой приложения состоят из объектов.",
+                "Парадигма разработки программных систем, в которой приложения состоят из объектов. (Абревиатуры НЕ допускаются)",
                 "Метод построения программ как совокупности логических правил с предварительно определенными алгоритмами для обработки входных данных программы в соответствии с ее правилами",
                 "Формализованное представление требований, предъявляемых к программе, которые должны быть удовлетворены при ее разработке, а также описание задачи, условия и эффекта действия без указания способа его достижения",
                 "Трансляция программы с языка высокого уровня в форму, близкую к программе на машинном языке"};
@@ -194,17 +187,6 @@ public class Window extends JFrame{
         player2AnswerField.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7), TEXT_FIELD_WIDTH, BUTTON_HEIGHT);
         gamePanel.add(player2AnswerField);
 
-        //добавление кнопки для получения вопроса и привязка слушателя
-        JButton get1Question = new JButton("Получить вопрос");
-        get1Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
-        JButton get2Question = new JButton("Получить вопрос");
-        get2Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
-        get1Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question, player1AnswerField, player2AnswerField, answers, player1QuestionLabel, player2QuestionLabel, answersMarker));
-        get2Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question, player1AnswerField, player2AnswerField, answers, player1QuestionLabel, player2QuestionLabel, answersMarker));
-        gamePanel.add(get1Question);
-        gamePanel.add(get2Question);
-        get2Question.setEnabled(false);
-
 
         // Добавляем кнопки броска дротиков для каждого игрока
         JButton send1Button = new JButton("Кинуть дротик");
@@ -213,8 +195,32 @@ public class Window extends JFrame{
         send2Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 + BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
         send2Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel, questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField));
         send1Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel, questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField));
+        send2Button.setEnabled(false);
+
+        //добавление кнопки для получения вопроса и привязка слушателя
+        JButton get1Question = new JButton("Получить вопрос");
+        get1Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
+        JButton get2Question = new JButton("Получить вопрос");
+        get2Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
+
+        timerLabelForPlayer1 = new JLabel("Затраченное время: 0:00");
+        timerLabelForPlayer1.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_57 + BUTTON_HEIGHT), LABEL_WIDTH, BUTTON_HEIGHT);
+        timerLabelForPlayer2 = new JLabel("Затраченное время: 0:00");
+        timerLabelForPlayer2.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_57 + BUTTON_HEIGHT), LABEL_WIDTH, BUTTON_HEIGHT);
+        get1Question.addActionListener(new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2, get1Question, get2Question, send1Button, send2Button));
+        get2Question.addActionListener(new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2, get1Question, get2Question, send1Button, send2Button));
+        send1Button.addActionListener(new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2, get1Question, get2Question, send1Button, send2Button));
+        send2Button.addActionListener(new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2, get1Question, get2Question, send1Button, send2Button));
         gamePanel.add(send1Button);
         gamePanel.add(send2Button);
-        send2Button.setEnabled(false);
+
+        get1Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question, player1QuestionLabel, player2QuestionLabel, send1Button, send2Button));
+        get2Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question, player1QuestionLabel, player2QuestionLabel, send1Button, send2Button));
+        gamePanel.add(get1Question);
+        gamePanel.add(get2Question);
+        gamePanel.add(timerLabelForPlayer1);
+        gamePanel.add(timerLabelForPlayer2);
+        get2Question.setEnabled(false);
+
     }
 }
