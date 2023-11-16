@@ -23,8 +23,6 @@ public class ActionListenerForTimer implements ActionListener {
 
     Thread timerThread = new Thread();
 
-
-
     public ActionListenerForTimer(
             JLabel timerLabelForPlayer1,
             JLabel timerLabelForPlayer2,
@@ -64,7 +62,7 @@ public class ActionListenerForTimer implements ActionListener {
     public void stopTimer(Thread timerThread, JLabel timerLabel) {
         timerRunning = false;
         timerThread.interrupt();
-        timerLabel.setText("Затраченное время: 0:00");
+        seconds = 0;
     }
 
 

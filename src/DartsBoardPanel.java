@@ -31,6 +31,7 @@ public class DartsBoardPanel extends JPanel {
 
         // Отрисовка буллсай
         g2.setColor(Color.RED);
-        g2.fillOval(CENTER_X - BULLSEYE_RADIUS, CENTER_Y - BULLSEYE_RADIUS, BULLSEYE_RADIUS * 2, BULLSEYE_RADIUS * 2);
+        g2.fillOval(CENTER_X - BULLSEYE_RADIUS, CENTER_Y - BULLSEYE_RADIUS, BULLSEYE_RADIUS * 2,
+                BULLSEYE_RADIUS * 2);
     }
 }

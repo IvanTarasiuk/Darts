@@ -54,13 +54,15 @@ public class ActionListenerForGetQuestion implements ActionListener {
             send2Button.setEnabled(false);
         } else {
             if(!questions[randomQuestion].equals("")) {
-                playerQuestionLabel.setText("<html><div style='width: 350px; text-align: justify;'>" + questions[randomQuestion] + "<br></div></html>");
+                playerQuestionLabel.setText("<html><div style='width: 350px; text-align: justify;'>"
+                        + questions[randomQuestion] + "<br></div></html>");
                 questions[randomQuestion] = "";
             } else{
                 while(questions[randomQuestion].equals("")) {
                     randomQuestion = new Random().nextInt(questions.length);
                 }
-                playerQuestionLabel.setText("<html><div style='width: 350px; text-align: justify;'>" + questions[randomQuestion] + "<br></div></html>");
+                playerQuestionLabel.setText("<html><div style='width: 350px; text-align: justify;'>"
+                        + questions[randomQuestion] + "<br></div></html>");
                 questions[randomQuestion] = "";
             }
             return randomQuestion;

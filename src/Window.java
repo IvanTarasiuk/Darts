@@ -57,8 +57,8 @@ public class Window extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel.setLayout(new GridLayout(3, 3));
         setSize(SCREEN_SIZE.width, SCREEN_SIZE.height);
-        Dimension panelSize = new Dimension(1920, 1080);
-        setBounds(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height);
+        Dimension panelSize = new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT);
+        setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         panel.setPreferredSize(panelSize);
 
         JButton startButton = new JButton("Start the game!");
@@ -89,7 +89,8 @@ public class Window extends JFrame{
         //переключение панелей
         startButton.addActionListener(new ActionListenerForStart(cardLayout, cardPanel, "game"));
         JButton menuButton = new JButton("Back to menu");
-        menuButton.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_57), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_99), 150, 20);
+        menuButton.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_57), (int) (SCREEN_HEIGHT -
+                SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_99), 150, 20);
         gamePanel.add(menuButton);
         menuButton.addActionListener(new ActionListenerForStart(cardLayout, cardPanel, "menu"));
         settingsButton.addActionListener(new ActionListenerForStart(cardLayout, cardPanel, "settings"));
@@ -99,10 +100,12 @@ public class Window extends JFrame{
 
         //размещение счёта
         JLabel player1ScoreLabel = new JLabel("Score for Player 1: 0");
-        player1ScoreLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_5), BUTTON_WIDTH, BUTTON_HEIGHT);
+        player1ScoreLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_5), BUTTON_WIDTH, BUTTON_HEIGHT);
         gamePanel.add(player1ScoreLabel);
         JLabel player2ScoreLabel = new JLabel("Score for Player 2: 0");
-        player2ScoreLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_5), BUTTON_WIDTH, BUTTON_HEIGHT);
+        player2ScoreLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_5), BUTTON_WIDTH, BUTTON_HEIGHT);
         gamePanel.add(player2ScoreLabel);
 
         //заполнение масива вопросов и ответов + добавление лейбла для отображения вопросов
@@ -173,49 +176,77 @@ public class Window extends JFrame{
                 true
         };
         JLabel player1QuestionLabel = new JLabel("");
-        player1QuestionLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_9), LABEL_WIDTH, LABEL_HEIGHT);
+        player1QuestionLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_9), LABEL_WIDTH, LABEL_HEIGHT);
         gamePanel.add(player1QuestionLabel);
         JLabel player2QuestionLabel = new JLabel("");
-        player2QuestionLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_9), LABEL_WIDTH, LABEL_HEIGHT);
+        player2QuestionLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_9), LABEL_WIDTH, LABEL_HEIGHT);
         gamePanel.add(player2QuestionLabel);
 
         //добавление текстового поля для ввода ответов
         JTextField player1AnswerField = new JTextField();
-        player1AnswerField.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7), TEXT_FIELD_WIDTH, BUTTON_HEIGHT);
+        player1AnswerField.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7), TEXT_FIELD_WIDTH, BUTTON_HEIGHT);
         gamePanel.add(player1AnswerField);
         JTextField player2AnswerField = new JTextField();
-        player2AnswerField.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7), TEXT_FIELD_WIDTH, BUTTON_HEIGHT);
+        player2AnswerField.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7), TEXT_FIELD_WIDTH, BUTTON_HEIGHT);
         gamePanel.add(player2AnswerField);
 
 
+        timerLabelForPlayer1 = new JLabel("Затраченное время: 0:00");
+        timerLabelForPlayer1.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_57 + BUTTON_HEIGHT),
+                LABEL_WIDTH, BUTTON_HEIGHT);
+        timerLabelForPlayer2 = new JLabel("Затраченное время: 0:00");
+        timerLabelForPlayer2.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_57 + BUTTON_HEIGHT),
+                LABEL_WIDTH, BUTTON_HEIGHT);
+
         // Добавляем кнопки броска дротиков для каждого игрока
         JButton send1Button = new JButton("Кинуть дротик");
-        send1Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 + BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
+        send1Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 + BUTTON_HEIGHT),
+                BUTTON_WIDTH, BUTTON_HEIGHT);
         JButton send2Button = new JButton("Кинуть дротик");
-        send2Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 + BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
-        send2Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel, questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField));
-        send1Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel, questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField));
+        send2Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 + BUTTON_HEIGHT),
+                BUTTON_WIDTH, BUTTON_HEIGHT);
+        send2Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel,
+                questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField,
+                timerLabelForPlayer1, timerLabelForPlayer2));
+        send1Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel,
+                questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField,
+                timerLabelForPlayer1, timerLabelForPlayer2));
         send2Button.setEnabled(false);
 
         //добавление кнопки для получения вопроса и привязка слушателя
         JButton get1Question = new JButton("Получить вопрос");
-        get1Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
+        get1Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT),
+                BUTTON_WIDTH, BUTTON_HEIGHT);
         JButton get2Question = new JButton("Получить вопрос");
-        get2Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT), BUTTON_WIDTH, BUTTON_HEIGHT);
+        get2Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT),
+                BUTTON_WIDTH, BUTTON_HEIGHT);
 
-        timerLabelForPlayer1 = new JLabel("Затраченное время: 0:00");
-        timerLabelForPlayer1.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_57 + BUTTON_HEIGHT), LABEL_WIDTH, BUTTON_HEIGHT);
-        timerLabelForPlayer2 = new JLabel("Затраченное время: 0:00");
-        timerLabelForPlayer2.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35), (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_57 + BUTTON_HEIGHT), LABEL_WIDTH, BUTTON_HEIGHT);
-        get1Question.addActionListener(new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2, get1Question, get2Question, send1Button, send2Button));
-        get2Question.addActionListener(new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2, get1Question, get2Question, send1Button, send2Button));
-        send1Button.addActionListener(new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2, get1Question, get2Question, send1Button, send2Button));
-        send2Button.addActionListener(new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2, get1Question, get2Question, send1Button, send2Button));
+
+        ActionListenerForTimer actionListenerForTimerPlayer1 = new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2,
+                get1Question, get2Question, send1Button, send2Button);
+        ActionListenerForTimer actionListenerForTimerPlayer2 = new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2,
+                get1Question, get2Question, send1Button, send2Button);
+        get1Question.addActionListener(actionListenerForTimerPlayer1);
+        get2Question.addActionListener(actionListenerForTimerPlayer2);
+        send1Button.addActionListener(actionListenerForTimerPlayer1);
+        send2Button.addActionListener(actionListenerForTimerPlayer2);
         gamePanel.add(send1Button);
         gamePanel.add(send2Button);
 
-        get1Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question, player1QuestionLabel, player2QuestionLabel, send1Button, send2Button));
-        get2Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question, player1QuestionLabel, player2QuestionLabel, send1Button, send2Button));
+        get1Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question,
+                player1QuestionLabel, player2QuestionLabel, send1Button, send2Button));
+        get2Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question,
+                player1QuestionLabel, player2QuestionLabel, send1Button, send2Button));
         gamePanel.add(get1Question);
         gamePanel.add(get2Question);
         gamePanel.add(timerLabelForPlayer1);
