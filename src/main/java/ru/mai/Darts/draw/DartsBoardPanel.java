@@ -1,3 +1,5 @@
+package ru.mai.Darts.draw;
+
 import javax.swing.*;
 import java.awt.*;
 

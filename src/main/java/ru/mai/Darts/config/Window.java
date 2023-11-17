@@ -1,3 +1,8 @@
+package ru.mai.Darts.config;
+
+import ru.mai.Darts.draw.DartsBoardPanel;
+import ru.mai.Darts.listeners.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -47,9 +52,6 @@ public class Window extends JFrame{
 
     private JLabel timerLabelForPlayer2;
 
-//    private Timer timerForPlayer1;
-//
-//    private Timer timerForPlayer2;
 
 
     public Window() {
@@ -62,6 +64,7 @@ public class Window extends JFrame{
         panel.setPreferredSize(panelSize);
 
         JButton startButton = new JButton("Start the game!");
+        startButton.addActionListener(new ActionListenerForRules());
         JButton settingsButton = new JButton("Settings");
 
         //сетка для того, чтобы кнопка была посередине
@@ -89,8 +92,13 @@ public class Window extends JFrame{
         //переключение панелей
         startButton.addActionListener(new ActionListenerForStart(cardLayout, cardPanel, "game"));
         JButton menuButton = new JButton("Back to menu");
+        JButton rulesButton = new JButton("Rules");
+        rulesButton.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_57 - BUTTON_WIDTH), (int) (SCREEN_HEIGHT -
+                SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_99), BUTTON_WIDTH, BUTTON_HEIGHT);
+        rulesButton.addActionListener(new ActionListenerForRules());
+        gamePanel.add(rulesButton);
         menuButton.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_57), (int) (SCREEN_HEIGHT -
-                SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_99), 150, 20);
+                SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_99), BUTTON_WIDTH, BUTTON_HEIGHT);
         gamePanel.add(menuButton);
         menuButton.addActionListener(new ActionListenerForStart(cardLayout, cardPanel, "menu"));
         settingsButton.addActionListener(new ActionListenerForStart(cardLayout, cardPanel, "settings"));
