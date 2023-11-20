@@ -10,6 +10,10 @@ public class ActionListenerForThrow implements ActionListener {
 
     private final JPanel gamePanel;
 
+    private JFrame winnerFrame = new JFrame();
+
+    private JLabel winnerLabel = new JLabel();
+
     private final JLabel player1ScoreLabel;
 
     private final JLabel player2ScoreLabel;
@@ -26,7 +30,17 @@ public class ActionListenerForThrow implements ActionListener {
 
     private final JLabel getTimerLabelForPlayer2;
 
-    private final int CENTER_X = 690, CENTER_Y = 400, BIGGEST_RADIUS = 200, DART_RADIUS = 14, ORRECT_ANSWER_RADIUS = 60;
+    private final JButton get1Question;
+
+    private final int CENTER_X = 690, CENTER_Y = 400, BIGGEST_RADIUS = 200, DART_RADIUS = 14;
+
+    private final int WINNER_WIDTH = 200;
+
+    private final int WINNER_HEIGHT = 100;
+
+    private final int WINNER_COORDS_X = 500;
+
+    private final int WINNNER_COORDS_Y = 300;
 
     private int counterOfThrows = 1;
 
@@ -55,7 +69,8 @@ public class ActionListenerForThrow implements ActionListener {
             JTextField player1AnswerField,
             JTextField player2AnswerField,
             JLabel timerLabelForPlayer1,
-            JLabel getTimerLabelForPlayer2
+            JLabel getTimerLabelForPlayer2,
+            JButton get1Question
     ){
         this.gamePanel = gamePanel;
         this.player1ScoreLabel = player1ScoreLabel;
@@ -69,6 +84,7 @@ public class ActionListenerForThrow implements ActionListener {
         this.player2AnswerField = player2AnswerField;
         this.timerLabelForPlayer1 = timerLabelForPlayer1;
         this.getTimerLabelForPlayer2 = getTimerLabelForPlayer2;
+        this.get1Question = get1Question;
     }
 
 
@@ -147,6 +163,32 @@ public class ActionListenerForThrow implements ActionListener {
         }
     }
 
+    public void winner(JLabel player1ScoreLabel, JLabel player2ScoreLabel, JButton send1Button, JButton get1Question) {
+        String player1Score = player1ScoreLabel.getText();
+        String player2Score = player2ScoreLabel.getText();
+        int startIndex = player1Score.lastIndexOf(": ") + 1;
+        int score1 = Integer.parseInt(player1Score.substring(startIndex).trim());
+        int score2 = Integer.parseInt(player2Score.substring(startIndex).trim());
+        String winner = "";
+        if(score1 > score2) {
+            winner += "Победил игрок 1!";
+        } else if (score2 > score1) {
+            winner += "Победил игрок 2!";
+        } else {
+            winner += "Победила дружба!!!";
+        }
+        winnerFrame.setTitle("Winner");
+        winnerFrame.setLayout(new FlowLayout());
+        winnerLabel.setText(winner);
+        System.out.println(score1);
+        System.out.println(score2);
+        winnerFrame.setBounds(WINNER_COORDS_X, WINNNER_COORDS_Y, WINNER_WIDTH, WINNER_HEIGHT);
+        winnerFrame.add(winnerLabel, BorderLayout.CENTER);
+        winnerFrame.setVisible(true);
+        get1Question.setEnabled(false);
+        send1Button.setEnabled(false);
+    }
+
     public void throwDart(boolean correctMarker, JTextField playerAnswerField, JLabel playerScoreLabel,
                           JButton sendButtonFalse, JButton sendButtonTrue, int playerTurn, JLabel timerLabelForPlayer){
         Graphics2D g2 = (Graphics2D) gamePanel.getGraphics();
@@ -213,7 +255,7 @@ public class ActionListenerForThrow implements ActionListener {
         }
         if (counterOfThrows >= MAX_THROWS + 1 && e.getSource() == send2Button) {
             throwDart(correctMarker, player2AnswerField, player2ScoreLabel, send2Button, send1Button, 2, getTimerLabelForPlayer2);
-
+            winner(player1ScoreLabel, player2ScoreLabel, send1Button, get1Question);
         }
     }
 }

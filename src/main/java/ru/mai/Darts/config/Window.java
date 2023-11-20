@@ -42,8 +42,6 @@ public class Window extends JFrame{
 
     private final double SCREEN_INCREASE_FACTOR_0_7 = 0.7;
 
-    private final double SCREEN_INCREASE_FACTOR_0_8 = 0.8;
-
     private final double SCREEN_INCREASE_FACTOR_0_9 = 0.9;
 
     private final double SCREEN_INCREASE_FACTOR_0_99 = 0.99;
@@ -116,7 +114,7 @@ public class Window extends JFrame{
                 (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_5), BUTTON_WIDTH, BUTTON_HEIGHT);
         gamePanel.add(player2ScoreLabel);
 
-        //заполнение масива вопросов и ответов + добавление лейбла для отображения вопросов
+        //заполнение массива вопросов и ответов + добавление лейбла для отображения вопросов
         String[] questions = {"Данные, предназначенные для управления конкретными компонентами системы обработки информации в целях реализации определенного алгоритма",
                 "Совокупность программ системы обработки информации и программных документов, необходимых для эксплуатации этих программ",
                 "Научная и практическая деятельность по созданию программ",
@@ -212,6 +210,16 @@ public class Window extends JFrame{
                 (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_57 + BUTTON_HEIGHT),
                 LABEL_WIDTH, BUTTON_HEIGHT);
 
+        //добавление кнопки для получения вопроса и привязка слушателя
+        JButton get1Question = new JButton("Получить вопрос");
+        get1Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT),
+                BUTTON_WIDTH, BUTTON_HEIGHT);
+        JButton get2Question = new JButton("Получить вопрос");
+        get2Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35),
+                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT),
+                BUTTON_WIDTH, BUTTON_HEIGHT);
+
         // Добавляем кнопки броска дротиков для каждого игрока
         JButton send1Button = new JButton("Кинуть дротик");
         send1Button.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9),
@@ -223,27 +231,17 @@ public class Window extends JFrame{
                 BUTTON_WIDTH, BUTTON_HEIGHT);
         send2Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel,
                 questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField,
-                timerLabelForPlayer1, timerLabelForPlayer2));
+                timerLabelForPlayer1, timerLabelForPlayer2, get1Question));
         send1Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel,
                 questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField,
-                timerLabelForPlayer1, timerLabelForPlayer2));
+                timerLabelForPlayer1, timerLabelForPlayer2, get1Question));
         send2Button.setEnabled(false);
 
-        //добавление кнопки для получения вопроса и привязка слушателя
-        JButton get1Question = new JButton("Получить вопрос");
-        get1Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9),
-                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT),
-                BUTTON_WIDTH, BUTTON_HEIGHT);
-        JButton get2Question = new JButton("Получить вопрос");
-        get2Question.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35),
-                (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 - BUTTON_HEIGHT),
-                BUTTON_WIDTH, BUTTON_HEIGHT);
 
-
-        ActionListenerForTimer actionListenerForTimerPlayer1 = new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2,
-                get1Question, get2Question, send1Button, send2Button);
-        ActionListenerForTimer actionListenerForTimerPlayer2 = new ActionListenerForTimer(timerLabelForPlayer1, timerLabelForPlayer2,
-                get1Question, get2Question, send1Button, send2Button);
+        ActionListenerForTimer actionListenerForTimerPlayer1 = new ActionListenerForTimer(timerLabelForPlayer1,
+                timerLabelForPlayer2, get1Question, get2Question, send1Button, send2Button);
+        ActionListenerForTimer actionListenerForTimerPlayer2 = new ActionListenerForTimer(timerLabelForPlayer1,
+                timerLabelForPlayer2, get1Question, get2Question, send1Button, send2Button);
         get1Question.addActionListener(actionListenerForTimerPlayer1);
         get2Question.addActionListener(actionListenerForTimerPlayer2);
         send1Button.addActionListener(actionListenerForTimerPlayer1);
