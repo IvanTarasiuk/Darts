@@ -1,7 +1,7 @@
-package ru.mai.Darts.config;
+package com.github.vanechka.Darts.config;
 
-import ru.mai.Darts.database.DBConnection;
-import ru.mai.Darts.draw.DartsBoardPanel;
+import com.github.vanechka.Darts.draw.DartsBoardPanel;
+import com.github.vanechka.Darts.listeners.*;
 import ru.mai.Darts.listeners.*;
 
 import javax.swing.*;

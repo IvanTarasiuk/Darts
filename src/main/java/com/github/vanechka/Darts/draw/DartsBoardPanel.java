@@ -1,4 +1,4 @@
-package ru.mai.Darts.draw;
+package com.github.vanechka.Darts.draw;
 
 import javax.swing.*;
 import java.awt.*;

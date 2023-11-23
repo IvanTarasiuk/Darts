@@ -1,6 +1,6 @@
-package ru.mai.Darts.listeners;
+package com.github.vanechka.Darts.listeners;
 
-import ru.mai.Darts.database.DBConnection;
+import com.github.vanechka.Darts.database.DBConnection;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

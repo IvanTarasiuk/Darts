@@ -1,4 +1,4 @@
-package ru.mai.Darts.listeners;
+package com.github.vanechka.Darts.listeners;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;

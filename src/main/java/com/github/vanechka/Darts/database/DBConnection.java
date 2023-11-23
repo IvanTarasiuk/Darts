@@ -1,4 +1,4 @@
-package ru.mai.Darts.database;
+package com.github.vanechka.Darts.database;
 
 import java.sql.*;
 

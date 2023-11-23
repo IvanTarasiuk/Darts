@@ -1,4 +1,4 @@
-import ru.mai.Darts.config.Window;
+import com.github.vanechka.Darts.config.Window;
 
 public class Main {
     public static void main(String[] args) {
