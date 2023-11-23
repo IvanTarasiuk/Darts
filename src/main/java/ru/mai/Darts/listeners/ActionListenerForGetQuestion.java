@@ -1,5 +1,7 @@
 package ru.mai.Darts.listeners;
 
+import ru.mai.Darts.database.DBConnection;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,8 +9,6 @@ import java.util.Random;
 
 
 public class ActionListenerForGetQuestion implements ActionListener {
-
-    private final String[] questions;
 
     private final JLabel player1QuestionLabel;
 
@@ -22,8 +22,11 @@ public class ActionListenerForGetQuestion implements ActionListener {
 
     private final JButton send2Button;
 
+    private final int COUNT_OF_QUESTIONS = 21;
+
+    private final int COUNT_OF_ROUNDS = 20;
+
     public ActionListenerForGetQuestion(
-            String[] questions,
             JButton get1Question,
             JButton get2Question,
             JLabel player1QuestionLabel,
@@ -31,7 +34,6 @@ public class ActionListenerForGetQuestion implements ActionListener {
             JButton send1Button,
             JButton send2Button
     ) {
-        this.questions = questions;
         this.get1Question = get1Question;
         this.get2Question = get2Question;
         this.player1QuestionLabel = player1QuestionLabel;
@@ -42,30 +44,33 @@ public class ActionListenerForGetQuestion implements ActionListener {
 
 
     public int getRandomQuestion(JLabel playerQuestionLabel) {
-        int randomQuestion = new Random().nextInt(questions.length);
+        int randomQuestion = new Random().nextInt(COUNT_OF_QUESTIONS);
         int markerQuestions = 0;
-        for (int i = 0; i < questions.length; ++i) {
-            if(questions[i].equals("")){
+        DBConnection connect = new DBConnection();
+        String question = connect.getQuestionFromDB(randomQuestion);
+        for (int i = 0; i < COUNT_OF_QUESTIONS; ++i) {
+            if(connect.getQuestionFromDB(i).equals("")){
                 markerQuestions += 1;
             }
         }
-        if (markerQuestions == 20) {
+        if (markerQuestions == COUNT_OF_ROUNDS) {
             get1Question.setEnabled(false);
             get2Question.setEnabled(false);
             send1Button.setEnabled(false);
             send2Button.setEnabled(false);
         } else {
-            if(!questions[randomQuestion].equals("")) {
+            if(!question.equals("")) {
                 playerQuestionLabel.setText("<html><div style='width: 350px; text-align: justify;'>"
-                        + questions[randomQuestion] + "<br></div></html>");
-                questions[randomQuestion] = "";
+                        + question + "<br></div></html>");
+                connect.updateQuestionInDB(randomQuestion);
             } else{
-                while(questions[randomQuestion].equals("")) {
-                    randomQuestion = new Random().nextInt(questions.length);
+                while(question.equals("")) {
+                    randomQuestion = new Random().nextInt(COUNT_OF_QUESTIONS);
+                    question = connect.getQuestionFromDB(randomQuestion);
                 }
                 playerQuestionLabel.setText("<html><div style='width: 350px; text-align: justify;'>"
-                        + questions[randomQuestion] + "<br></div></html>");
-                questions[randomQuestion] = "";
+                        + question + "<br></div></html>");
+                connect.updateQuestionInDB(randomQuestion);
             }
             return randomQuestion;
         }

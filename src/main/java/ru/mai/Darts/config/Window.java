@@ -1,5 +1,6 @@
 package ru.mai.Darts.config;
 
+import ru.mai.Darts.database.DBConnection;
 import ru.mai.Darts.draw.DartsBoardPanel;
 import ru.mai.Darts.listeners.*;
 
@@ -113,74 +114,6 @@ public class Window extends JFrame{
         player2ScoreLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_35),
                 (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_5), BUTTON_WIDTH, BUTTON_HEIGHT);
         gamePanel.add(player2ScoreLabel);
-
-        //заполнение массива вопросов и ответов + добавление лейбла для отображения вопросов
-        String[] questions = {"Данные, предназначенные для управления конкретными компонентами системы обработки информации в целях реализации определенного алгоритма",
-                "Совокупность программ системы обработки информации и программных документов, необходимых для эксплуатации этих программ",
-                "Научная и практическая деятельность по созданию программ",
-                "Программа, являющаяся частью другой программы и удовлетворяющая требованиям языка программирования к структуре программы",
-                "Искусственный язык, предназначенный для выражения алгоритмов",
-                "Язык программирования, используемый для первичного представления программы",
-                "Язык программирования, предназначенный для представления программ в форме, позволяющей выполнять ее непосредственно техническими средствами обработки информации.",
-                "Язык программирования, понятия и структура которого удобны для восприятия человеком",
-                "Язык программирования для выражения определений. Примечание. В качестве такого языка часто выступает язык описания данных",
-                "Язык программирования, в котором действия над данными выражаются в терминах последовательностей команд",
-                "Язык программирования, в котором действия над данными выражаются в виде обращений к функциональным процедурам",
-                "Программа или техническое средство, выполняющие трансляцию программы.",
-                "Программа или техническое средство, выполняющие компиляцию.",
-                "Программа или техническое средство, выполняющие ассемблирование",
-                "Программа или техническое средство, выполняющие интерпретацию.",
-                "Организованная совокупность программ или частей этих программ, а также, возможно, информации, относящейся к их использованию.",
-                "Метод построения программ, использующий только иерархически вложенные конструкции каждая из которых имеет единственную точка входа и единственную точку выхода.",
-                "Парадигма разработки программных систем, в которой приложения состоят из объектов. (Абревиатуры НЕ допускаются)",
-                "Метод построения программ как совокупности логических правил с предварительно определенными алгоритмами для обработки входных данных программы в соответствии с ее правилами",
-                "Формализованное представление требований, предъявляемых к программе, которые должны быть удовлетворены при ее разработке, а также описание задачи, условия и эффекта действия без указания способа его достижения",
-                "Трансляция программы с языка высокого уровня в форму, близкую к программе на машинном языке"};
-
-        String[] answers = {"Программа",
-                "Программное обеспечение",
-                "Программирование",
-                "Подпрограмма",
-                "Алгоритмический язык",
-                "Исходный язык",
-                "Машинный язык",
-                "Язык высокого уровня",
-                "Декларативный язык",
-                "Процедурный язык",
-                "Функциональный язык",
-                "Транслятор",
-                "Компилятор",
-                "Ассемблер",
-                "Интерпретатор",
-                "Библиотека программ",
-                "Структурное программирование",
-                "Объектно-ориентированное программирование",
-                "Логическое программирование",
-                "Спецификация программы",
-                "Компиляция"
-        };
-        boolean[] answersMarker = {true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true
-        };
         JLabel player1QuestionLabel = new JLabel("");
         player1QuestionLabel.setBounds((int) (SCREEN_WIDTH - SCREEN_WIDTH * SCREEN_INCREASE_FACTOR_0_9),
                 (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_9), LABEL_WIDTH, LABEL_HEIGHT);
@@ -230,10 +163,10 @@ public class Window extends JFrame{
                 (int) (SCREEN_HEIGHT - SCREEN_HEIGHT * SCREEN_INCREASE_FACTOR_0_7 + BUTTON_HEIGHT),
                 BUTTON_WIDTH, BUTTON_HEIGHT);
         send2Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel,
-                questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField,
+                send1Button, send2Button, player1AnswerField, player2AnswerField,
                 timerLabelForPlayer1, timerLabelForPlayer2, get1Question));
         send1Button.addActionListener(new ActionListenerForThrow(gamePanel, player1ScoreLabel, player2ScoreLabel,
-                questions, answers, answersMarker, send1Button, send2Button, player1AnswerField, player2AnswerField,
+                send1Button, send2Button, player1AnswerField, player2AnswerField,
                 timerLabelForPlayer1, timerLabelForPlayer2, get1Question));
         send2Button.setEnabled(false);
 
@@ -249,15 +182,14 @@ public class Window extends JFrame{
         gamePanel.add(send1Button);
         gamePanel.add(send2Button);
 
-        get1Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question,
+        get1Question.addActionListener(new ActionListenerForGetQuestion(get1Question, get2Question,
                 player1QuestionLabel, player2QuestionLabel, send1Button, send2Button));
-        get2Question.addActionListener(new ActionListenerForGetQuestion(questions, get1Question, get2Question,
+        get2Question.addActionListener(new ActionListenerForGetQuestion(get1Question, get2Question,
                 player1QuestionLabel, player2QuestionLabel, send1Button, send2Button));
         gamePanel.add(get1Question);
         gamePanel.add(get2Question);
         gamePanel.add(timerLabelForPlayer1);
         gamePanel.add(timerLabelForPlayer2);
         get2Question.setEnabled(false);
-
     }
 }

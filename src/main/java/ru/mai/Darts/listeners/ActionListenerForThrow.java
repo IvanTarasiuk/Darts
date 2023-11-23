@@ -1,5 +1,7 @@
 package ru.mai.Darts.listeners;
 
+import ru.mai.Darts.database.DBConnection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -50,20 +52,15 @@ public class ActionListenerForThrow implements ActionListener {
 
     private int player2Score = 0;
 
-    private final String[] questions;
+    private final int COUNT_OF_QUESTIONS = 21;
 
-    private final String[] answers;
-
-    private boolean[] answersMarker;
+    private final int COUNT_OF_ROUNDS = 20;
 
 
     public ActionListenerForThrow(
             JPanel gamePanel,
             JLabel player1ScoreLabel,
             JLabel player2ScoreLabel,
-            String[] questions,
-            String[] answers,
-            boolean[] answersMarker,
             JButton send1Button,
             JButton send2Button,
             JTextField player1AnswerField,
@@ -75,9 +72,6 @@ public class ActionListenerForThrow implements ActionListener {
         this.gamePanel = gamePanel;
         this.player1ScoreLabel = player1ScoreLabel;
         this.player2ScoreLabel = player2ScoreLabel;
-        this.questions = questions;
-        this.answers = answers;
-        this.answersMarker = answersMarker;
         this.send1Button = send1Button;
         this.send2Button = send2Button;
         this.player1AnswerField = player1AnswerField;
@@ -112,13 +106,15 @@ public class ActionListenerForThrow implements ActionListener {
         }
     }
 
-    public boolean isCorrectAnswer(String answer, int randomQuestion, String[] answers) {
+    public boolean isCorrectAnswer(String answer, int randomQuestion) {
+        DBConnection connect = new DBConnection();
+        String correctAnswer = connect.getAnswerFromDB(randomQuestion);
         System.out.println("Ответ игрока = " + answer);
-        System.out.println("Правильный ответ = " + answers[randomQuestion]);
+        System.out.println("Правильный ответ = " + correctAnswer);
         System.out.print("Результат = ");
-        System.out.println(answer.equalsIgnoreCase(answers[randomQuestion]));
+        System.out.println(answer.equalsIgnoreCase(correctAnswer));
         System.out.println("-------------------------");
-        if(answer.equalsIgnoreCase(answers[randomQuestion])) {
+        if(answer.equalsIgnoreCase(correctAnswer)) {
             return true;
         }
         return false;
@@ -180,8 +176,6 @@ public class ActionListenerForThrow implements ActionListener {
         winnerFrame.setTitle("Winner");
         winnerFrame.setLayout(new FlowLayout());
         winnerLabel.setText(winner);
-        System.out.println(score1);
-        System.out.println(score2);
         winnerFrame.setBounds(WINNER_COORDS_X, WINNNER_COORDS_Y, WINNER_WIDTH, WINNER_HEIGHT);
         winnerFrame.add(winnerLabel, BorderLayout.CENTER);
         winnerFrame.setVisible(true);
@@ -193,6 +187,7 @@ public class ActionListenerForThrow implements ActionListener {
                           JButton sendButtonFalse, JButton sendButtonTrue, int playerTurn, JLabel timerLabelForPlayer){
         Graphics2D g2 = (Graphics2D) gamePanel.getGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        DBConnection connect = new DBConnection();
         int playerScore;
         String textForLabel = "Score for player ";
         if(playerTurn == 1){
@@ -207,10 +202,10 @@ public class ActionListenerForThrow implements ActionListener {
         String answer = getAnswer(playerAnswerField);
         int time = getTime(timerLabelForPlayer);
         System.out.println("Затраченное время = " + time + " сек");
-        for(int i = 0; i < questions.length; i++) {
-            if(questions[i].equals("") && answersMarker[i]) {
-                answersMarker[i] = false;
-                correctMarker = isCorrectAnswer(answer, i, answers);
+        for(int i = 0; i < COUNT_OF_QUESTIONS; i++) {
+            if(connect.getQuestionFromDB(i).equals("") && connect.getMarkerFromDB(i)) {
+                connect.updateMarkerInDB(i);                                                                            //connect.updateMarkerInDB(randomQuestion);
+                correctMarker = isCorrectAnswer(answer, i);
                 break;
             }
         }
