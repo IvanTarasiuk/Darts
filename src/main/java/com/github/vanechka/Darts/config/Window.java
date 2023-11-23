@@ -2,7 +2,6 @@ package com.github.vanechka.Darts.config;
 
 import com.github.vanechka.Darts.draw.DartsBoardPanel;
 import com.github.vanechka.Darts.listeners.*;
-import ru.mai.Darts.listeners.*;
 
 import javax.swing.*;
 import java.awt.*;

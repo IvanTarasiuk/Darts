@@ -1,0 +1,1 @@
+truncate questions_and_answers;
