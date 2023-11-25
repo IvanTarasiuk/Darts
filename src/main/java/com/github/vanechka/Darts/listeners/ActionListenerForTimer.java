@@ -61,7 +61,7 @@ public class ActionListenerForTimer implements ActionListener {
         timerThread.start();
     }
 
-    public void stopTimer(Thread timerThread, JLabel timerLabel) {
+    public void stopTimer(Thread timerThread) {
         timerRunning = false;
         timerThread.interrupt();
         seconds = 0;
@@ -75,9 +75,9 @@ public class ActionListenerForTimer implements ActionListener {
         } else if(e.getSource() == get2Question) {
             setTimer(timerLabelForPlayer2);
         } else if(e.getSource() == send1Button) {
-            stopTimer(timerThread, timerLabelForPlayer1);
+            stopTimer(timerThread);
         } else if(e.getSource() == send2Button) {
-            stopTimer(timerThread, timerLabelForPlayer2);
+            stopTimer(timerThread);
         }
         timerLabelForPlayer1.setVisible(true);
         timerLabelForPlayer2.setVisible(true);
