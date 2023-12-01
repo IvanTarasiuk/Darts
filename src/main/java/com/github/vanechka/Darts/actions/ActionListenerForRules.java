@@ -1,4 +1,4 @@
-package com.github.vanechka.Darts.listeners;
+package com.github.vanechka.Darts.actions;
 
 import javax.swing.*;
 import java.awt.*;
