@@ -28,6 +28,9 @@ public class DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return answer;
     }
@@ -50,6 +53,9 @@ public class DBConnection {
             statement.close();
             connection.close();
         } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
@@ -76,6 +82,9 @@ public class DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return marker;
     }
@@ -96,6 +105,9 @@ public class DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -114,6 +126,9 @@ public class DBConnection {
             statement.close();
             connection.close();
         } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
