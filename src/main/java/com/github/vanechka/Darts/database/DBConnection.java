@@ -4,31 +4,27 @@ import java.sql.*;
 
 public class DBConnection {
 
-    private String url = "jdbc:postgresql://localhost:5433/postgres";
-    private String user = "postgres";
-    private String password = "adminqwerty";
+    private String url = "jdbc:postgresql://localhost:5433/postgres";;
+    private String user = "postgres";;
+    private String password = "adminqwerty";;
+
 
     public String getAnswerFromDB(int index) {
         String answer = "";
         String select = """
-                select answer
-                from questions_and_answers
-                where id = ?
-                """;
-        try {
-            Connection connection = DriverManager.getConnection(url, user, password);
-            PreparedStatement statement = connection.prepareStatement(select);
+            select answer
+            from questions_and_answers
+            where id = ?
+            """;
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(select)) {
             statement.setInt(1, index + 1);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            answer = resultSet.getString("answer");
-            resultSet.close();
-            statement.close();
-            connection.close();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    answer = resultSet.getString("answer");
+                }
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        } catch (NullPointerException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
@@ -38,24 +34,19 @@ public class DBConnection {
     public String getQuestionFromDB(int index) {
         String question = "";
         String select = """
-                select questions_and_answers.question
-                from questions_and_answers
-                where id = ?
-                """;
-        try {
-            Connection connection = DriverManager.getConnection(url, user, password);
-            PreparedStatement statement = connection.prepareStatement(select);
+            select questions_and_answers.question
+            from questions_and_answers
+            where id = ?
+            """;
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(select)) {
             statement.setInt(1, index + 1);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            question = resultSet.getString("question");
-            resultSet.close();
-            statement.close();
-            connection.close();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    question = resultSet.getString("question");
+                }
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        } catch (NullPointerException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
@@ -63,30 +54,25 @@ public class DBConnection {
     }
 
     public Boolean getMarkerFromDB(int index) {
-        boolean marker = false;
+        boolean usage_marker = false;
         String select = """
-                select usage_marker
-                from questions_and_answers
-                where id = ?
-                """;
-        try {
-            Connection connection = DriverManager.getConnection(url, user, password);
-            PreparedStatement statement = connection.prepareStatement(select);
+            select usage_marker
+            from questions_and_answers
+            where id = ?
+            """;
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(select)) {
             statement.setInt(1, index + 1);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            marker = resultSet.getBoolean("usage_marker");
-            resultSet.close();
-            statement.close();
-            connection.close();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    usage_marker = resultSet.getBoolean("usage_marker");
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
         }
-        return marker;
+        return usage_marker;
     }
 
     public void updateQuestionInDB(int index) {
@@ -95,40 +81,27 @@ public class DBConnection {
             set question = ''
             where id = ?
             """;
-        try {
-            Connection connection = DriverManager.getConnection(url, user, password);
-            PreparedStatement statement = connection.prepareStatement(update);
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(update)) {
             statement.setInt(1, index + 1);
             statement.executeUpdate();
-            statement.close();
-            connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        } catch (NullPointerException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }
 
     public void updateMarkerInDB(int index) {
-        String update =
-                """
+        String update = """
             update questions_and_answers
             set usage_marker = false
             where id = ?
             """;
-        try {
-            Connection connection = DriverManager.getConnection(url, user, password);
-            PreparedStatement statement = connection.prepareStatement(update);
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(update)) {
             statement.setInt(1, index + 1);
             statement.executeUpdate();
-            statement.close();
-            connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        } catch (NullPointerException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }

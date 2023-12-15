@@ -1,1 +1,1 @@
-truncate questions_and_answers;
+truncate "questions_and_answers";

@@ -1,5 +1,6 @@
 package com.github.vanechka.Darts.config;
 
+import com.github.vanechka.Darts.database.DBConnection;
 import com.github.vanechka.Darts.draw.DartsBoardPanel;
 import com.github.vanechka.Darts.actions.*;
 
